@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region to provision the Kente Retail staging stack in."
   type        = string
-  default     = "us-east-1"
+  default     = "eu-west-1"
 }
 
 variable "project_tag" {
@@ -29,7 +29,7 @@ variable "public_subnet_cidr" {
 variable "availability_zone" {
   description = "Availability zone for the public subnet."
   type        = string
-  default     = "us-east-1a"
+  default     = "eu-west-1a"
 }
 
 variable "allowed_ssh_cidr" {
@@ -63,4 +63,13 @@ variable "bucket_name_suffix" {
   description = "Suffix appended to project_tag to form the (globally-unique) S3 bucket name."
   type        = string
   default     = "data"
+}
+
+variable "key_name" {
+  description = <<-EOT
+    Name of the SSH keypair to use for the EC2 instance. Must already exist in
+    AWS account in the same region as the stack. 
+  EOT
+  type        = string
+  default     =  "ansible-key-pair"
 }

@@ -15,7 +15,7 @@ resource "aws_vpc" "staging" {
 
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.staging.id
-  cidr_block              = var.public_subnet_cidr
+  cidr_block              = var.public_subnet_cidr  
   availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
 
@@ -130,6 +130,9 @@ resource "aws_iam_role_policy" "app_s3_access" {
 resource "aws_iam_instance_profile" "app" {
   name = "${var.project_tag}-ec2-profile"
   role = aws_iam_role.app.name
+  tags = {
+    Project = var.project_tag
+  }
 }
 
 # --- Storage -------------------------------------------------------------------
@@ -160,6 +163,7 @@ resource "aws_instance" "app" {
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.app.id]
   iam_instance_profile   = aws_iam_instance_profile.app.name
+  key_name               = var.key_name
 
   tags = {
     Name    = "${var.project_tag}-app"
